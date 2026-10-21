@@ -1,0 +1,7 @@
+tensorflow
+scikit-learn
+numpy
+pandas
+matplotlib
+Pillow
+split-folders==0.5.1
