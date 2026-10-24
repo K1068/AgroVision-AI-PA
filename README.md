@@ -1,222 +1,398 @@
-# AgroVision AI — Predictive Analytics
+# 🌿 AgroVision AI
 
-## Project Title
-**Performance Evaluation and Comparative Analysis of Multiclass Classification Models for Plant Disease Detection**
+### AI-Powered Plant Disease Detection System using Deep Learning, TensorFlow, Flask and Computer Vision
 
-## 1. Introduction
+AgroVision AI is a web-based plant disease classification system that uses a Convolutional Neural Network (CNN) to classify leaf images. The application provides a predicted class and model confidence score, symptoms, treatment recommendations, prevention tips, farmer recommendations (English & Hindi), prediction history, downloadable reports, and an analytics dashboard.
 
-Plant diseases can affect agricultural productivity and crop quality. Machine learning and deep learning techniques can assist in identifying plant diseases by analyzing images of plant leaves.
+---
 
-AgroVision AI — Predictive Analytics focuses on evaluating the performance of multiclass image-classification models for identifying healthy and diseased plant leaves. The project uses the PlantVillage dataset and evaluates an existing EfficientNetB0-based classification model as the initial experimental baseline.
+## 🚀 Live Demo
 
-The Predictive Analytics project is focused on dataset analysis, model evaluation, performance metrics, and comparative analysis rather than simply developing a plant disease detection application.
+🔗 https://agrovision-ai-7ovf.onrender.com
 
-## 2. Objectives
+---
 
-- Study a multiclass plant disease image-classification problem.
-- Inspect the dataset, class labels, and class distribution.
-- Verify the saved EfficientNetB0 model and its input/output dimensions.
-- Evaluate the existing model using appropriate classification metrics.
-- Analyze class-wise performance using precision, recall, F1-score, and a confusion matrix.
-- Compare multiple classification models under consistent experimental conditions, if required by the assignment.
-- Document the experimental methodology, results, limitations, and future improvements.
+## 📊 Project Presentation
 
-## 3. Dataset
+📥 [Download AgroVision AI Project Presentation](https://raw.githubusercontent.com/K100-SKETCH/AgroVision-AI/main/AgroVision_AI_MTE_PBL3_KSHITIJ_2427030457_5TH%20SEM.pdf)
 
-The project uses the PlantVillage plant leaf image dataset obtained through Kaggle.
+---
 
-The dataset copy inspected for this project contains **20,638 valid images across 15 classes**, covering tomato, potato, and bell pepper leaves. The classes include healthy leaves and multiple disease categories.
+## 📌 Project Highlights
 
-The dataset was extracted and inspected in Google Colab. A separate 80:20 training/validation split was created for the Predictive Analytics evaluation using a random seed of 42.
+- 🌱 Deep Learning based Plant Disease Detection
+- 🧠 CNN Model trained using TensorFlow & Keras
+- 📷 Image Upload and Real-Time Prediction
+- 📊 Interactive Analytics Dashboard
+- 📈 Model Confidence Score Visualization
+- 🌿 Smart Farmer Recommendation Engine
+- 🇮🇳 Hindi Recommendation Support
+- 📄 PDF Report Generation
+- 📜 Prediction History
+- 📥 CSV Export
+- 🗄 SQLite Database Integration
+- 💻 Responsive Flask Web Application
 
-- Total valid images identified: 20,638
-- Number of classes: 15
-- Training images in the reconstructed split: 16,504
-- Validation images in the reconstructed split: 4,134
-- Image input size: 224 × 224 pixels
+## 📖 Project Overview
 
-**Dataset source:** [Insert the exact Kaggle dataset URL here.]
+AgroVision AI is an end-to-end Artificial Intelligence based web application designed to assist farmers, agricultural researchers, and students in identifying plant diseases from leaf images.
 
-The exact dataset version and its relationship to the original PBL training data have not been independently established. The dataset is not included in this repository because of its size.
+The system uses a Convolutional Neural Network (CNN) trained on the PlantVillage dataset to classify images of Tomato, Potato, and Bell Pepper leaves.
 
-## 4. Machine Learning Approach
+After a user uploads a leaf image, the application performs the following tasks:
 
-The primary task is **supervised multiclass image classification**.
+* Detects the plant disease
+* Calculates a model confidence score
+* Displays the top 3 predicted diseases
+* Provides symptoms, treatment, and prevention methods
+* Generates AI-powered farmer recommendations in both English and Hindi
+* Saves every prediction to a SQLite database
+* Displays analytics through an interactive dashboard
+* Allows downloading prediction reports as PDF and CSV
 
-The existing AgroVision AI system uses an EfficientNetB0-based deep learning model with a classification head consisting of global average pooling, a dense layer, dropout, and a 15-class softmax output.
+The application is built using Flask for the backend, TensorFlow/Keras for deep learning, SQLite for data storage, and Chart.js for interactive analytics.
 
-The saved model was inspected and loaded successfully in Google Colab.
+---
 
-- Model architecture: EfficientNetB0-based sequential classifier
-- Input shape: 224 × 224 × 3
-- Output shape: 15 class scores
-- Model file format: Keras HDF5 (`.h5`)
+## 🎯 Objectives
 
-The existing model is used as the initial evaluation baseline. Additional classification models will be implemented and compared if required by the assignment and available computing resources.
+* Classify plant leaf images using Deep Learning.
+* Reduce manual disease diagnosis.
+* Assist farmers with treatment recommendations.
+* Provide bilingual (English & Hindi) guidance.
+* Maintain prediction history and analytics.
+* Generate downloadable reports for future reference.
 
-## 5. Tools and Technologies
+## ✨ Features
 
-- Python
-- Google Colab
-- TensorFlow and Keras
-- EfficientNetB0
-- NumPy and Pandas
-- Scikit-learn
-- Matplotlib
-- `split-folders`
-- GitHub for version control and project collaboration
+| Feature                        | Description                                                               |
+| ------------------------------ | ------------------------------------------------------------------------- |
+| 🌿 Plant Disease Detection     | Detects diseases from uploaded leaf images using a trained CNN model.     |
+| 🎯 Model confidence score      | Displays the model's output score as a percentage.                         |
+| 🏆 Top 3 Predictions           | Shows the three highest-scoring model predictions.                        |
+| 🔍 Disease Information         | Displays symptoms, treatment methods, and prevention tips.                |
+| 🌱 Smart Farmer Recommendation | Provides AI-powered recommendations for disease management.               |
+| 🇮🇳 Hindi Recommendation      | Displays farmer recommendations in Hindi for better accessibility.        |
+| 📊 Analytics Dashboard         | Visualizes prediction statistics using interactive charts.                |
+| 📜 Prediction History          | Stores previous predictions in a SQLite database.                         |
+| 📄 PDF Report                  | Generates a downloadable PDF report for every prediction.                 |
+| 📥 CSV Export                  | Allows downloading the complete prediction history in CSV format.         |
+| 💾 SQLite Database             | Stores predicted class, model confidence score, image path, and analysis time. |
+| 🌐 Flask Web Application       | Responsive web interface built using Flask.                               |
+| ⚡ Real-Time Prediction         | Generates predictions within a few seconds after image upload.            |
 
-## 6. Experimental Methodology
+## 🌱 Supported Plants
 
-The evaluation workflow consists of the following stages:
+* 🍅 Tomato
+* 🥔 Potato
+* 🫑 Bell Pepper
 
-1. Extract and inspect the PlantVillage dataset.
-2. Verify the number of classes, image counts, and class labels.
-3. Reconstruct a separate 80:20 training/validation split using seed 42.
-4. Configure image generators with a target size of 224 × 224 and a batch size of 32.
-5. Apply the EfficientNet preprocessing function used by the original notebook.
-6. Evaluate the saved EfficientNetB0 model on the reconstructed validation split.
-7. Calculate overall and class-wise performance metrics.
-8. Generate a confusion matrix and save the evaluation outputs.
-9. Perform comparative analysis with an additional classification model if required.
+---
 
-The training generator includes image augmentation settings from the original notebook. Validation images are not augmented, and validation predictions are generated without shuffling so that predicted labels remain aligned with the true labels.
+## 🍃 Supported Diseases
 
-### Evaluation integrity
+### Tomato
 
-The original notebook used an 80:20 split with seed 42. The PA project recreated a split using the same ratio and seed in a separate directory.
+* Healthy
+* Bacterial Spot
+* Early Blight
+* Late Blight
+* Leaf Mold
+* Septoria Leaf Spot
+* Spider Mites
+* Target Spot
+* Tomato Mosaic Virus
+* Tomato Yellow Leaf Curl Virus
 
-However, the exact identity of the reconstructed split relative to the historical split has not been independently verified. The saved model's complete training history and exact relationship to the original evaluation artifact also remain unverified.
+### Potato
 
-Consequently, the current evaluation is reported as **reconstructed validation performance**, not independent test-set performance.
+* Healthy
+* Early Blight
+* Late Blight
 
-## 7. Evaluation Metrics
+### Bell Pepper
 
-The following metrics are used to assess the classification model:
+* Healthy
+* Bacterial Spot
 
-- **Accuracy:** Proportion of all predictions that are correct.
-- **Precision:** Proportion of predictions for a class that are correct.
-- **Recall:** Proportion of actual examples of a class that are correctly identified.
-- **F1-score:** Harmonic mean of precision and recall.
-- **Macro average:** Average metric across classes, giving every class equal weight.
-- **Weighted average:** Average metric weighted by the number of examples in each class.
-- **Confusion matrix:** Counts of correct and incorrect predictions for each actual and predicted class.
+---
 
-These metrics provide a more complete assessment than accuracy alone, particularly when class distributions and class-wise performance differ.
+# 🛠 Tech Stack
 
-## 8. Initial Evaluation Results
+| Category             | Technology                         |
+| -------------------- | ---------------------------------- |
+| Programming Language | Python 3.11                        |
+| Backend Framework    | Flask                              |
+| Machine Learning     | TensorFlow                         |
+| Deep Learning        | Keras                              |
+| Neural Network       | Convolutional Neural Network (CNN) |
+| Computer Vision      | OpenCV                             |
+| Numerical Computing  | NumPy                              |
+| Database             | SQLite                             |
+| Frontend             | HTML5, CSS3, JavaScript            |
+| Charts               | Chart.js                           |
+| PDF Generation       | ReportLab                          |
+| Deployment           | Render                             |
+| Version Control      | Git & GitHub                       |
 
-The saved EfficientNetB0 model was evaluated on the reconstructed validation split containing 4,134 images across 15 classes.
-
-| Metric | Result |
-|---|---:|
-| Validation accuracy | 75.91% |
-| Macro precision | 0.84 |
-| Macro recall | 0.70 |
-| Macro F1-score | 0.68 |
-| Weighted precision | 0.82 |
-| Weighted recall | 0.76 |
-| Weighted F1-score | 0.73 |
-
-These values are taken from the actual evaluation output generated in Google Colab.
-
-### Class-wise observations
-
-The evaluation showed substantial variation in recall across classes.
-
-| Class | Recall |
-|---|---:|
-| Pepper bell healthy | 1.00 |
-| Tomato Yellow Leaf Curl Virus | 0.96 |
-| Tomato Late Blight | 0.93 |
-| Tomato Early Blight | 0.12 |
-| Tomato Target Spot | 0.25 |
-| Tomato Mosaic Virus | 0.04 |
-| Tomato healthy | 0.30 |
-
-The model performs strongly on some categories but misses many examples from others. This demonstrates why class-wise precision, recall, F1-score, and confusion-matrix analysis are important for multiclass classification.
-
-The current results establish a baseline for further investigation. They do not, by themselves, establish why the errors occur or prove that one model is better than another.
-
-### Evaluation artifacts
-
-The generated outputs are available in the [`results/`](results/) directory:
-
-- `classification_report.csv` — class-wise and aggregate classification metrics.
-- `classification_report.txt` — readable classification report and validation accuracy.
-- `confusion_matrix.csv` — confusion matrix counts.
-- `confusion_matrix.png` — confusion matrix visualization.
-
-## 9. Comparative Analysis — Pending
-
-The initial evaluation covers the existing EfficientNetB0 model. A second classification model has not yet been evaluated as part of the documented PA experiment.
-
-If comparative analysis is required, another suitable classifier will be selected and evaluated using consistent data separation and evaluation metrics.
-
-Any comparison will report the actual experimental results. No comparative performance claims will be made until the additional model has been implemented and evaluated.
-
-## 10. Limitations
-
-- The current reported performance is based on a reconstructed validation split, not an independently verified test set.
-- The exact relationship between the saved model, historical training process, and reconstructed split has not been fully established.
-- Performance on PlantVillage images may not generalize to real-world field images with different lighting, backgrounds, camera conditions, and disease severity.
-- Some classes have substantially lower recall than others.
-- A comparative experiment with an additional classification model is still pending.
-- No regression experiment or disease-severity prediction is included because reliable numerical ground-truth severity labels have not been established.
-
-## 11. Repository Structure
+# 📂 Project Structure
 
 ```text
-AgroVision-AI-PA/
-├── README.md
+AgroVision-AI/
+│
+├── model/
+│   └── agrovision_best_model.h5
+│
+├── static/
+│   ├── css/
+│   │   └── style.css
+│   └── uploads/
+│
+├── templates/
+│   ├── index.html
+│   ├── result.html
+│   ├── history.html
+│   └── dashboard.html
+│
+├── screenshots/
+│   ├── home.png
+│   ├── result.png
+│   ├── dashboard.png
+│   ├── history.png
+│   └── recommendation.png
+│
+├── Agro_model_train.ipynb
+├── app.py
+├── predict.py
+├── recommendation_engine.py
+├── disease_info.py
 ├── requirements.txt
-├── .gitignore
-├── notebooks/
-│   ├── README.md
-│   └── AgroVision_PA_Model_Verification (1).ipynb
-└── results/
-    ├── README.md
-    ├── classification_report.csv
-    ├── classification_report.txt
-    ├── confusion_matrix.csv
-    └── confusion_matrix.png
+├── Procfile
+├── runtime.txt
+├── .render.yaml
+└── README.md
+```
+# 📸 Screenshots
+
+## 🏠 Home Page
+
+![Home Page](screenshots/home.png)
+
+---
+
+## 🔍 Disease Prediction Result
+
+![Prediction Result](screenshots/result.png)
+
+---
+
+## 🌱 Smart Farmer Recommendation
+
+![Recommendation](screenshots/recommendation.png)
+
+---
+
+## 📊 Analytics Dashboard
+
+![Dashboard](screenshots/dashboard.png)
+
+---
+
+## 📜 Prediction History
+
+![History](screenshots/history.png)
+
+## ⚙️ Installation
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/K100-SKETCH/AgroVision-AI.git
 ```
 
-The repository contains the evaluation notebook and generated results, not the complete PlantVillage dataset or saved model artifact.
+### 2. Navigate to the project directory
 
-## 12. Reproducibility
+```bash
+cd AgroVision-AI
+```
 
-The evaluation notebook was developed in Google Colab.
+### 3. Create a virtual environment (Optional but Recommended)
 
-To reproduce the experiment, a collaborator will need:
+**Windows**
 
-1. Access to this GitHub repository.
-2. The PlantVillage dataset used for the experiment.
-3. The compatible saved EfficientNetB0 model artifact.
-4. A Google Colab runtime with compatible Python and machine learning dependencies.
-5. The evaluation notebook in `notebooks/`.
+```bash
+python -m venv venv
+venv\Scripts\activate
+```
 
-The dataset and model must be made available separately. The notebook should be checked for environment compatibility and its complete execution should be verified before claiming that the experiment is fully reproducible.
+**Linux / macOS**
 
-## 13. Future Scope
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
 
-- Implement and evaluate an additional classification baseline.
-- Compare models using accuracy, macro F1-score, weighted F1-score, and confusion matrices.
-- Investigate classes with low recall and frequent misclassifications.
-- Verify the original training split and model provenance.
-- Evaluate on a genuinely independent test set if a suitable test set can be established.
-- Investigate external field-image evaluation if an appropriately labelled dataset becomes available.
+### 4. Install the required packages
 
-## 14. Project Status
+```bash
+pip install -r requirements.txt
+```
 
-**Current stage: Initial model evaluation completed; comparative analysis and reproducibility verification pending.**
+### 5. Run the application
 
-The dataset was inspected, the saved model was loaded successfully, and the reconstructed validation evaluation was completed. The resulting classification report and confusion matrix have been uploaded to GitHub.
+```bash
+python app.py
+```
 
-The next stages are to verify the experiment's reproducibility, implement the required model comparison, interpret the results, and prepare the final report and presentation.
+### 6. Open your browser
 
-## 15. Academic Integrity
+```
+http://127.0.0.1:5000
+```
+## 📖 Usage
 
-All reported metrics are based on recorded experimental outputs. Validation results are not presented as independent test results, and unperformed experiments are explicitly identified as pending.
+1. Open the AgroVision AI web application.
+2. Upload an image of a plant leaf (Tomato, Potato, or Bell Pepper).
+3. Click **Analyze Leaf**.
+4. Wait a few seconds while the CNN model processes the image.
+5. View the prediction results, including:
 
-The project will distinguish verified results from assumptions, limitations, and future work.
+   * Predicted class
+   * Model confidence score
+   * A note explaining that the score is not a confirmed diagnosis or measure of disease severity
+   * Top 3 predictions
+   * Symptoms
+   * Treatment methods
+   * Prevention tips
+   * Smart Farmer Recommendations (English & Hindi)
+6. Download the prediction report as a PDF if required.
+7. View previous analyses in the **History** page.
+8. Explore overall prediction statistics in the **Dashboard**.
+
+---
+
+## Prediction API (local development)
+
+Send a `multipart/form-data` `POST` request to `/api/predict` with the image in
+the `leaf_image` field. JPEG and PNG images are supported; the existing 8 MiB
+request limit and image-dimension checks apply. Successful predictions return
+JSON with the predicted class, model score, Top-3 outputs, disease information,
+recommendations, and India-local analysis time. Each successful API prediction
+is added to the existing history, and the uploaded image is retained in the
+application's upload directory.
+
+Errors use a JSON `success: false` envelope. The API uses `400` for missing or
+invalid images, `415` for unsupported image formats, `413` for oversized
+requests, `422` when the image is not accepted as a supported leaf, and `500`
+for internal processing failures.
+
+When running `python app.py`, the Android Studio emulator can reach the host
+machine at `http://10.0.2.2:10000/api/predict`.
+
+---
+
+## 🧠 Deep Learning Model
+
+| Property        | Details                            |
+| --------------- | ---------------------------------- |
+| Model Type      | Convolutional Neural Network (CNN) |
+| Framework       | TensorFlow & Keras                 |
+| Dataset         | PlantVillage                       |
+| Supported Crops | Tomato, Potato, Bell Pepper        |
+| Total Classes   | 15                                 |
+| Input Size      | 224 × 224 RGB                      |
+| Output          | Predicted class + model score      |
+
+---
+
+## 📊 Dataset
+
+The model was trained using the **PlantVillage** dataset, one of the most widely used benchmark datasets for plant disease classification.
+
+**Supported Classes**
+
+* Tomato (10 classes)
+* Potato (3 classes)
+* Bell Pepper (2 classes)
+
+Total Classes: **15**
+
+The dataset contains labeled leaf images covering healthy and diseased plants and was used to train the CNN classification model.
+
+---
+
+# 🚀 Future Improvements
+
+The following features are planned for future versions of AgroVision AI:
+
+* 🌾 Support for more crop species
+* 📱 Android application
+* ☁ Cloud database integration
+* 🌍 Multi-language support
+* 🤖 Advanced AI recommendation engine
+* 📷 Live camera disease detection
+* 📍 GPS-based crop monitoring
+* 📈 Farmer analytics dashboard
+* 🔔 Early disease warning notifications
+* 🌐 REST API for third-party integration
+
+---
+
+# 🤝 Contributing
+
+Contributions are welcome!
+
+If you would like to improve AgroVision AI:
+
+1. Fork the repository
+2. Create a new feature branch
+3. Commit your changes
+4. Push your branch
+5. Open a Pull Request
+
+---
+
+# 📄 License
+
+This project is developed for educational and research purposes.
+
+Feel free to use and modify the project for learning, academic work, and research with proper attribution.
+
+---
+
+# 👨‍💻 Author
+
+**Kshitij**
+
+B.Tech Computer Science Engineering
+Manipal University Jaipur
+
+GitHub: https://github.com/K100-SKETCH
+
+---
+
+# ⭐ Show Your Support
+
+If you found this project useful, please consider giving it a ⭐ on GitHub.
+
+Your support motivates further improvements and future AI-based agricultural projects.
+
+---
+
+# 🙏 Acknowledgements
+
+Special thanks to:
+
+* PlantVillage Dataset
+* TensorFlow Team
+* Keras
+* Flask
+* OpenCV
+* Chart.js
+* ReportLab
+* Render
+* GitHub
+
+---
+
+**Made with ❤️ using Artificial Intelligence, Deep Learning, and Computer Vision for Smart Agriculture.**
