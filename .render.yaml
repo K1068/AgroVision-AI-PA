@@ -1,7 +1,0 @@
-services:
-  - type: web
-    name: agrovision-ai
-    runtime: python
-    envVars: []
-    buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn --timeout 300 app:app
