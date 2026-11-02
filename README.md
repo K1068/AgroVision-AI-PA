@@ -8,7 +8,7 @@ AgroVision AI is a web-based plant disease classification system that uses a Con
 
 ## 🚀 Live Demo
 
-🔗 https://agrovision-ai-7ovf.onrender.com
+🔗 https://agrovision-ai-pa.onrender.com
 
 ---
 
