@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>AgroVision AI - Result</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- ================================================== -->
+    <!-- INVALID IMAGE -->
+    <!-- ================================================== -->
+
+    {% if validation_error %}
+
+    <div class="hero">
+
+        <h1>🌿 AgroVision AI</h1>
+
+        <p class="subtitle">
+            Plant Disease Analysis
+        </p>
+
+    </div>
+
+
+    <div class="feature-card"
+         style="
+         margin-top:50px;
+         padding:40px;
+         text-align:center;">
+
+        <h2 style="
+            color:#d32f2f;
+            font-size:36px;">
+
+            ⚠️ Invalid Image
+
+        </h2>
+
+
+        <p style="
+            font-size:20px;
+            margin-top:20px;
+            line-height:1.7;">
+
+            {{ validation_error }}
+
+        </p>
+
+
+        <a href="/"
+           style="
+           display:inline-block;
+           margin-top:25px;
+           background:#2e7d32;
+           color:white;
+           padding:12px 25px;
+           border-radius:10px;
+           text-decoration:none;">
+
+            🔄 Upload Another Image
+
+        </a>
+
+    </div>
+
+
+    <!-- ================================================== -->
+    <!-- NORMAL DISEASE RESULT -->
+    <!-- ================================================== -->
+
+    {% else %}
+
+
+    <!-- HERO -->
+
+    <div class="hero">
+
+        <h1>🌿 AgroVision AI</h1>
+
+        <p class="subtitle">
+            Plant Disease Analysis Report
+        </p>
+
+    </div>
+
+
+    <!-- IMAGE -->
+
+    <div style="margin-top:30px;">
+
+        <img src="/{{ image_path }}"
+             alt="Uploaded Leaf"
+             style="
+             max-width:500px;
+             width:100%;
+             border-radius:20px;
+             box-shadow:0 10px 25px rgba(0,0,0,0.15);">
+
+    </div>
+
+
+    <!-- ================================================== -->
+    <!-- DISEASE CARD -->
+    <!-- ================================================== -->
+
+    <div class="feature-card"
+         style="
+         margin-top:35px;
+         padding:35px;">
+
+        <h3>Predicted class</h3>
+
+
+        {% if "Healthy" in disease %}
+
+        <h2 style="
+            color:#2e7d32;
+            font-size:42px;
+            margin-top:15px;">
+
+            ✅ {{ disease }}
+
+        </h2>
+
+        {% else %}
+
+        <h2 style="
+            color:#d32f2f;
+            font-size:42px;
+            margin-top:15px;">
+
+            ⚠️ {{ disease }}
+
+        </h2>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- ================================================== -->
+    <!-- STATS -->
+    <!-- ================================================== -->
+
+    <div class="features">
+
+
+        <!-- MODEL SCORE -->
+
+        <div class="feature-card">
+
+            <h3>🎯 Model confidence score</h3>
+
+            <h2 style="color:#2e7d32;">
+
+                {{ "%.2f"|format(confidence) }}%
+
+            </h2>
+
+        </div>
+
+
+        <!-- ANALYSIS TIME -->
+
+        <div class="feature-card">
+
+            <h3>🕒 Analysis Time</h3>
+
+            <p style="font-size:18px;">
+
+                {{ analysis_time }}
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================================== -->
+    <!-- CONFIDENCE BAR -->
+    <!-- ================================================== -->
+
+    <div style="margin-top:40px;">
+
+        <h3>Model confidence score</h3>
+
+        <p>
+            This score reflects the model&#39;s output. It is not a confirmed diagnosis or a measure of disease severity, and predictions can be incorrect.
+        </p>
+
+
+        <div style="
+            width:100%;
+            height:25px;
+            background:#e0e0e0;
+            border-radius:20px;
+            overflow:hidden;">
+
+
+            <div style="
+                width:{{ confidence }}%;
+                height:100%;
+                background:#2e7d32;
+                ">
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================================== -->
+    <!-- TOP 3 PREDICTIONS -->
+    <!-- ================================================== -->
+
+    <div class="feature-card"
+         style="
+         margin-top:40px;
+         padding:30px;">
+
+        <h3>🏆 Top 3 Predictions</h3>
+
+
+        <table style="
+               width:100%;
+               margin-top:20px;
+               border-collapse:collapse;">
+
+
+            <tr style="
+                background:#f5f5f5;">
+
+                <th style="padding:12px;">
+                    Rank
+                </th>
+
+                <th style="padding:12px;">
+                    Disease
+                </th>
+
+                <th style="padding:12px;">
+                    Model confidence score
+                </th>
+
+            </tr>
+
+
+            {% for item in top3_predictions %}
+
+            <tr>
+
+                <td style="
+                    padding:12px;
+                    border-bottom:1px solid #ddd;">
+
+                    {{ loop.index }}
+
+                </td>
+
+
+                <td style="
+                    padding:12px;
+                    border-bottom:1px solid #ddd;">
+
+                    {{ item.name }}
+
+                </td>
+
+
+                <td style="
+                    padding:12px;
+                    border-bottom:1px solid #ddd;">
+
+                    {{ item.confidence }}%
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+    </div>
+
+
+    <!-- ================================================== -->
+    <!-- DISEASE INFORMATION -->
+    <!-- ================================================== -->
+
+    <div class="features"
+         style="margin-top:50px;">
+
+
+        <!-- SYMPTOMS -->
+
+        <div class="feature-card">
+
+            <h3>🔍 Symptoms</h3>
+
+            <p>
+                {{ symptoms }}
+            </p>
+
+        </div>
+
+
+        <!-- TREATMENT -->
+
+        <div class="feature-card">
+
+            <h3>💊 Treatment</h3>
+
+            <p>
+                {{ treatment }}
+            </p>
+
+        </div>
+
+
+        <!-- PREVENTION -->
+
+        <div class="feature-card">
+
+            <h3>🛡 Prevention</h3>
+
+            <p>
+                {{ prevention }}
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================================== -->
+    <!-- SMART FARMER RECOMMENDATION -->
+    <!-- ================================================== -->
+
+    <div class="feature-card"
+         style="
+         margin-top:50px;
+         padding:35px;
+         text-align:left;">
+
+
+        <h2 style="
+            color:#2e7d32;
+            text-align:center;
+            margin-bottom:30px;">
+
+            🌱 Smart Farmer Recommendation
+
+        </h2>
+
+
+        <!-- ENGLISH -->
+
+        <div style="
+            background:#e8f5e9;
+            border-left:6px solid #2e7d32;
+            padding:20px;
+            border-radius:10px;
+            margin-bottom:25px;">
+
+
+            <h3 style="color:#2e7d32;">
+
+                🇬🇧 Recommendation (English)
+
+            </h3>
+
+
+            <p style="
+                font-size:17px;
+                line-height:1.8;">
+
+                {{ recommendation_english }}
+
+            </p>
+
+        </div>
+
+
+        <!-- HINDI -->
+
+        <div style="
+            background:#fff8e1;
+            border-left:6px solid #ff9800;
+            padding:20px;
+            border-radius:10px;">
+
+
+            <h3 style="color:#ff9800;">
+
+                🇮🇳 किसान सलाह (Hindi)
+
+            </h3>
+
+
+            <p style="
+                font-size:18px;
+                line-height:1.8;">
+
+                {{ recommendation_hindi }}
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================================== -->
+    <!-- BUTTONS -->
+    <!-- ================================================== -->
+
+    <div style="margin-top:40px;">
+
+
+        <!-- PDF -->
+
+        <a href="/download-report"
+           style="
+           display:inline-block;
+           background:#2e7d32;
+           color:white;
+           padding:12px 25px;
+           border-radius:10px;
+           text-decoration:none;
+           margin:10px;">
+
+            📄 Download PDF Report
+
+        </a>
+
+
+        <!-- HISTORY -->
+
+        <a href="/history"
+           style="
+           display:inline-block;
+           background:#1976d2;
+           color:white;
+           padding:12px 25px;
+           border-radius:10px;
+           text-decoration:none;
+           margin:10px;">
+
+            📜 View History
+
+        </a>
+
+
+        <!-- NEW ANALYSIS -->
+
+        <a href="/"
+           style="
+           display:inline-block;
+           background:#616161;
+           color:white;
+           padding:12px 25px;
+           border-radius:10px;
+           text-decoration:none;
+           margin:10px;">
+
+            🔄 Analyze Another Leaf
+
+        </a>
+
+    </div>
+
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>

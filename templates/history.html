@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Prediction History</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="hero">
+
+        <h1>📜 Prediction History</h1>
+
+        <p class="subtitle">
+            Previous AgroVision AI Predictions
+        </p>
+
+    </div>
+
+    <!-- ACTION BUTTONS -->
+
+    <div style="
+        margin-top:30px;
+        display:flex;
+        justify-content:center;
+        gap:15px;
+        flex-wrap:wrap;">
+
+        <a href="/download-csv"
+           style="
+           background:#2e7d32;
+           color:white;
+           padding:12px 22px;
+           border-radius:10px;
+           text-decoration:none;
+           font-weight:bold;">
+
+           📥 Download CSV
+
+        </a>
+
+        <a href="/dashboard"
+           style="
+           background:#1565c0;
+           color:white;
+           padding:12px 22px;
+           border-radius:10px;
+           text-decoration:none;
+           font-weight:bold;">
+
+           📊 Analytics Dashboard
+
+        </a>
+
+    </div>
+
+    {% if records %}
+
+    <div
+        style="
+        overflow-x:auto;
+        margin-top:30px;
+        ">
+
+        <table
+            style="
+            width:100%;
+            border-collapse:collapse;
+            background:white;
+            border-radius:15px;
+            overflow:hidden;
+            box-shadow:0 5px 15px rgba(0,0,0,0.08);
+            ">
+
+            <thead>
+
+                <tr
+                    style="
+                    background:#2e7d32;
+                    color:white;
+                    ">
+
+                    <th style="padding:15px;">
+                        Predicted class
+                    </th>
+
+                    <th style="padding:15px;">
+                        Model confidence score
+                    </th>
+
+                    <th style="padding:15px;">
+                        Date & Time
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for row in records %}
+
+                <tr
+                    style="
+                    border-bottom:1px solid #eee;
+                    ">
+
+                    <td style="padding:15px;">
+
+                        {{ row[0] }}
+
+                    </td>
+
+                    <td style="padding:15px;">
+
+                        {{ "%.2f"|format(row[1]) }}%
+
+                    </td>
+
+                    <td style="padding:15px;">
+
+                        {{ row[3] }}
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    {% else %}
+
+        <div class="feature-card"
+             style="margin-top:30px;">
+
+            <h3>No Predictions Yet</h3>
+
+            <p>
+                Upload a leaf image to start building history.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+    <!-- BOTTOM BUTTONS -->
+
+    <div style="
+        margin-top:40px;
+        display:flex;
+        justify-content:center;
+        gap:15px;
+        flex-wrap:wrap;">
+
+        <a href="/"
+           style="
+           background:#2e7d32;
+           color:white;
+           padding:12px 22px;
+           border-radius:10px;
+           text-decoration:none;
+           font-weight:bold;">
+
+           🏠 Home
+
+        </a>
+
+        <a href="/dashboard"
+           style="
+           background:#1565c0;
+           color:white;
+           padding:12px 22px;
+           border-radius:10px;
+           text-decoration:none;
+           font-weight:bold;">
+
+           📊 Dashboard
+
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

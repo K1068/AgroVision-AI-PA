@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+
+    <title>AgroVision AI - Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- HERO -->
+
+    <div class="hero">
+
+        <h1>📊 AgroVision AI Analytics Dashboard</h1>
+
+        <p class="subtitle">
+            Analytics & Prediction Statistics
+        </p>
+
+    </div>
+
+    <!-- STATS -->
+
+    <div class="features" style="margin-top:40px;">
+
+        <div class="feature-card">
+
+            <h3>🌿 Total Analyses</h3>
+
+            <h2 style="color:#2e7d32;">
+                {{ total_analyses }}
+            </h2>
+
+        </div>
+
+        <div class="feature-card">
+
+            <h3>✅ Healthy Plants</h3>
+
+            <h2 style="color:#2e7d32;">
+                {{ healthy_count }}
+            </h2>
+
+        </div>
+
+        <div class="feature-card">
+
+            <h3>⚠ Diseased Plants</h3>
+
+            <h2 style="color:#d32f2f;">
+                {{ diseased_count }}
+            </h2>
+
+        </div>
+
+    </div>
+
+    <!-- AVERAGE MODEL SCORE -->
+
+    <div class="feature-card"
+         style="
+         margin-top:40px;
+         padding:35px;">
+
+        <h3>🎯 Average model score</h3>
+
+        <h1 style="
+            color:#2e7d32;
+            margin-top:15px;">
+
+            {{ average_model_score }}%
+
+        </h1>
+
+    </div>
+
+    <!-- CONFIDENCE BAR -->
+
+    <div style="margin-top:40px;">
+
+        <h3 style="
+            text-align:center;
+            color:#2e7d32;
+            margin-bottom:15px;">
+
+            Average model score
+
+        </h3>
+
+        <div style="
+            width:100%;
+            height:30px;
+            background:#e0e0e0;
+            border-radius:20px;
+            overflow:hidden;">
+
+            <div style="
+                width:{{ average_model_score }}%;
+                height:100%;
+                background:#2e7d32;">
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- PIE CHART -->
+
+    <div class="feature-card"
+         style="
+         margin-top:50px;
+         padding:35px;">
+
+        <h2 style="
+            color:#2e7d32;
+            margin-bottom:25px;">
+
+            📈 Plant Disease Analytics
+
+        </h2>
+
+        <div style="
+            max-width:600px;
+            margin:auto;">
+
+            <canvas id="diseaseChart"></canvas>
+
+        </div>
+
+    </div>
+
+    <!-- MODEL EVALUATION PERFORMANCE -->
+
+    <section class="model-section performance-section"
+             aria-labelledby="performance-title">
+
+        <h2 id="performance-title">Model Performance Matrix</h2>
+
+        <p class="performance-intro">
+            Offline model evaluation is separate from website upload-history
+            totals and the average model score for those uploads. An upload's
+            model score is not an accuracy measurement, and live predictions
+            are not included in these offline evaluation results.
+        </p>
+
+        {% if evaluation_available %}
+        <div class="model-grid performance-grid">
+
+            {% for metric in evaluation_metrics %}
+            <article class="model-card performance-card">
+                <h3>{{ metric.label }}</h3>
+                <p class="performance-value">{{ metric.value }}</p>
+            </article>
+            {% endfor %}
+
+        </div>
+
+        <p class="evaluation-disclosure">
+            These offline results were measured on a reconstructed validation split
+            of {{ "{:,}".format(validation_split_images) }} images. This is
+            not a verified independent test set. Overall accuracy and error
+            rate use all samples; the other summary rates below are unweighted
+            macro averages of per-class one-vs-rest results. These results do not
+            guarantee performance in real-world conditions.
+        </p>
+
+        <div class="class-metrics-card">
+            <h3>Per-class one-vs-rest metrics</h3>
+            <p>
+                Each row treats its class as positive and all other classes
+                together as negative. Counts and rates are calculated from
+                the confusion matrix; support is the number of actual images
+                for that class.
+            </p>
+            <div class="class-metrics-scroll"
+                 role="region"
+                 aria-label="Scrollable per-class evaluation metrics"
+                 tabindex="0">
+                <table class="class-metrics-table">
+                    <caption>
+                        One-vs-rest counts and rates for
+                        {{ confusion_matrix_total }} validation images
+                    </caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">Class</th>
+                            <th scope="col">Support</th>
+                            <th scope="col">TP</th>
+                            <th scope="col">TN</th>
+                            <th scope="col">FP</th>
+                            <th scope="col">FN</th>
+                            <th scope="col">Accuracy</th>
+                            <th scope="col">Precision</th>
+                            <th scope="col">Recall</th>
+                            <th scope="col">F1-score</th>
+                            <th scope="col">Specificity</th>
+                            <th scope="col">Error rate</th>
+                            <th scope="col">FPR</th>
+                            <th scope="col">FNR</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for class_metric in per_class_metrics %}
+                        <tr>
+                            <th scope="row"
+                                title="{{ class_metric.class_name }}">
+                                {{ class_metric.class_name }}
+                            </th>
+                            <td>{{ class_metric.support }}</td>
+                            <td>{{ class_metric.tp }}</td>
+                            <td>{{ class_metric.tn }}</td>
+                            <td>{{ class_metric.fp }}</td>
+                            <td>{{ class_metric.fn }}</td>
+                            <td>{{ "{:.2%}".format(class_metric.accuracy) }}</td>
+                            <td>{{ "{:.2%}".format(class_metric.precision) }}</td>
+                            <td>{{ "{:.2%}".format(class_metric.recall) }}</td>
+                            <td>{{ "{:.2%}".format(class_metric.f1_score) }}</td>
+                            <td>{{ "{:.2%}".format(class_metric.specificity) }}</td>
+                            <td>{{ "{:.2%}".format(class_metric.error_rate) }}</td>
+                            <td>{{ "{:.2%}".format(class_metric.false_positive_rate) }}</td>
+                            <td>{{ "{:.2%}".format(class_metric.false_negative_rate) }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="evaluation-details">
+            <h3>Metric glossary and formulas</h3>
+            <p>
+                TP (true positive): actual positive-class images predicted as
+                that class. TN (true negative): all other actual classes
+                correctly predicted as not that class.
+            </p>
+            <p>
+                FP (false positive): other actual classes predicted as this
+                class. FN (false negative): actual images of this class
+                predicted as another class. TP, TN, FP, and FN are always
+                defined relative to the selected positive class.
+            </p>
+            <p>
+                For each class, the dashboard uses one-vs-rest (OvR): that
+                class is positive and the other 14 classes are combined as
+                negative. Macro averages give every class equal weight. Overall
+                accuracy is the diagonal total divided by all samples; overall
+                error rate is the off-diagonal total divided by all samples.
+            </p>
+            <p>
+                Per-class formulas: Precision = TP/(TP+FP); Recall/Sensitivity
+                = TP/(TP+FN); F1 = 2×Precision×Recall/(Precision+Recall);
+                Specificity = TN/(TN+FP); FPR = FP/(FP+TN); FNR = FN/(FN+TP);
+                OvR accuracy = (TP+TN)/(TP+TN+FP+FN); OvR error rate =
+                (FP+FN)/(TP+TN+FP+FN).
+            </p>
+            <p>
+                If a formula's denominator is zero, its value is defined as
+                0. Lower error rate is better; higher accuracy, precision,
+                recall, F1-score, and specificity are better.
+            </p>
+        </div>
+
+        <div class="evaluation-matrix-card">
+            <h3>Confusion matrix heatmap</h3>
+
+            <p class="matrix-explanation">
+                Rows show the <strong>actual class</strong>; columns show the
+                <strong>predicted class</strong>. The diagonal contains correct
+                predictions, while off-diagonal cells show misclassifications.
+                Every cell displays its count; hover a cell for its actual
+                class, predicted class, and count.
+            </p>
+
+            <div class="matrix-legend" aria-label="Count color scale">
+                <span>Fewer: 0</span>
+                <span class="matrix-legend-gradient" aria-hidden="true"></span>
+                <span>More: {{ confusion_matrix_max }}</span>
+            </div>
+
+            <div class="matrix-scroll"
+                 role="region"
+                 aria-label="Scrollable confusion matrix heatmap"
+                 tabindex="0">
+                <table class="confusion-matrix">
+                    <caption>
+                        Confusion matrix for {{ confusion_matrix_total }}
+                        validation images
+                    </caption>
+                    <thead>
+                        <tr>
+                            <th class="matrix-corner" scope="col">
+                                Actual class ↓<br>
+                                Predicted class →
+                            </th>
+                            {% for class_name in confusion_class_names %}
+                            <th class="matrix-column-heading"
+                                scope="col"
+                                title="{{ class_name }}">
+                                <span>{{ class_name }}</span>
+                            </th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for matrix_row in confusion_matrix_rows %}
+                        <tr>
+                            <th class="matrix-row-heading"
+                                scope="row"
+                                title="{{ matrix_row.actual_class }}">
+                                {{ matrix_row.actual_class }}
+                            </th>
+                            {% for cell in matrix_row.cells %}
+                            <td class="confusion-cell{% if cell.is_diagonal %} diagonal-cell{% endif %}"
+                                style="--cell-intensity: {{ cell.intensity }}; --cell-text-color: {{ cell.text_color }};"
+                                title="Actual class: {{ matrix_row.actual_class }}; Predicted class: {{ cell.predicted_class }}; Count: {{ cell.count }}"
+                                aria-label="Actual class: {{ matrix_row.actual_class }}; Predicted class: {{ cell.predicted_class }}; Count: {{ cell.count }}">
+                                {{ cell.count }}
+                            </td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <p class="matrix-source">
+                Counts from the
+                <a href="https://github.com/K1068/AgroVision-AI-PA/blob/1b620195fa50c739005ffa682054d1438bb15dc7/results/confusion_matrix.csv"
+                   target="_blank"
+                   rel="noopener noreferrer">PA evaluation repository CSV</a>.
+                This is the reconstructed validation split, not an
+                independently verified test set.
+            </p>
+        </div>
+
+        <div class="evaluation-unavailable-card">
+            <h3>ROC curve, AUC, and log loss</h3>
+            <p>
+                The inspected local PA notebook outputs include the
+                classification report and confusion matrix, but do not
+                preserve per-image labels or predicted probability scores.
+                No curves or values are inferred from aggregate counts.
+            </p>
+            <div class="unavailable-metrics-grid">
+                <article class="unavailable-metric">
+                    <h4>ROC curve</h4>
+                    <p class="unavailable-metric-status">
+                        Evaluation data unavailable
+                    </p>
+                    <p>
+                        A curve requires ground-truth labels and continuous
+                        class scores across thresholds.
+                    </p>
+                </article>
+                <article class="unavailable-metric">
+                    <h4>AUC</h4>
+                    <p class="unavailable-metric-status">
+                        Evaluation data unavailable
+                    </p>
+                    <p>
+                        AUC cannot be derived from the confusion matrix or
+                        rounded classification metrics alone.
+                    </p>
+                </article>
+                <article class="unavailable-metric">
+                    <h4>Log loss</h4>
+                    <p class="unavailable-metric-status">
+                        Evaluation data unavailable
+                    </p>
+                    <p>
+                        Log loss requires each sample's true class and its
+                        predicted class probabilities.
+                    </p>
+                    <p>When calculable, lower log loss is better.</p>
+                </article>
+            </div>
+        </div>
+        {% else %}
+        <div class="evaluation-data-unavailable" role="status">
+            <h3>Offline evaluation unavailable</h3>
+            <p>
+                The evaluation matrix file
+                <code>results/confusion_matrix.csv</code> is missing. No
+                offline evaluation metrics or matrix are shown; upload-history
+                statistics above remain separate and available.
+            </p>
+        </div>
+        {% endif %}
+
+    </section>
+
+    <!-- BUTTONS -->
+
+    <div style="
+        margin-top:50px;
+        display:flex;
+        gap:20px;
+        justify-content:center;
+        flex-wrap:wrap;">
+
+        <a href="/"
+           style="
+           text-decoration:none;
+           padding:15px 25px;
+           background:#2e7d32;
+           color:white;
+           border-radius:10px;">
+
+           🏠 Home
+
+        </a>
+
+        <a href="/history"
+           style="
+           text-decoration:none;
+           padding:15px 25px;
+           background:#1565c0;
+           color:white;
+           border-radius:10px;">
+
+           📜 History
+
+        </a>
+
+    </div>
+
+</div>
+
+<script>
+
+const chartLabels =
+{{ chart_labels|tojson }};
+
+const chartValues =
+{{ chart_values|tojson }};
+
+new Chart(
+    document.getElementById(
+        'diseaseChart'
+    ),
+    {
+        type: 'doughnut',
+
+        data: {
+
+            labels: chartLabels,
+
+            datasets: [{
+
+                data: chartValues,
+
+                backgroundColor: [
+
+                    '#4CAF50',
+                    '#F44336',
+                    '#2196F3',
+                    '#FF9800',
+                    '#9C27B0',
+                    '#009688',
+                    '#795548',
+                    '#3F51B5',
+                    '#E91E63',
+                    '#607D8B'
+
+                ]
+
+            }]
+        },
+
+        options: {
+
+            cutout: '55%',
+
+            responsive: true,
+
+            plugins: {
+
+                legend: {
+
+                    position: 'bottom'
+
+                },
+
+                tooltip: {
+
+                    callbacks: {
+
+                        label: function(context) {
+
+                            let total =
+                                context.dataset.data.reduce(
+                                    (a, b) => a + b,
+                                    0
+                                );
+
+                            let value =
+                                context.raw;
+
+                            let percent =
+                                (
+                                    value / total * 100
+                                ).toFixed(1);
+
+                            return context.label +
+                                " (" +
+                                value +
+                                " cases)" +
+                                " - " +
+                                percent +
+                                "%";
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
+);
+
+</script>
+
+</body>
+</html>

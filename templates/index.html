@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AgroVision AI</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- HERO -->
+
+    <div class="hero">
+
+        <h1>🌿 AgroVision AI</h1>
+
+        <p class="subtitle">
+            AI-Powered Plant Disease Detection System
+        </p>
+
+        <p class="description">
+            Upload a leaf image and instantly detect diseases using
+            deep learning technology.
+        </p>
+
+    </div>
+
+    <!-- UPLOAD CARD -->
+
+    <div class="upload-card">
+
+        <form
+            action="/upload"
+            method="POST"
+            enctype="multipart/form-data"
+            onsubmit="showLoading()"
+        >
+
+            <!-- DRAG & DROP AREA -->
+
+            <div class="drop-zone" id="dropZone">
+
+                <input
+                    type="file"
+                    id="fileInput"
+                    name="leaf_image"
+                    accept="image/*"
+                    required
+                    hidden
+                >
+
+                <div class="upload-content">
+
+                    <span class="drop-icon">
+                        📷
+                    </span>
+
+                    <h3>Upload Leaf Image</h3>
+
+                    <p>
+                        Drag & Drop Image Here
+                        <br>
+                        or Click to Upload
+                    </p>
+
+                    <p id="fileName"></p>
+
+                </div>
+
+            </div>
+
+            <button
+                id="analyzeBtn"
+                type="submit"
+                class="analyze-btn"
+            >
+                🔍 Analyze Leaf
+            </button>
+
+        </form>
+
+        <div id="loadingText" class="loading-box">
+
+            <div class="loader"></div>
+
+            <p>
+                Analyzing image...
+                Please wait 10–30 seconds
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- FEATURES -->
+
+    <div class="features">
+
+        <div class="feature-card">
+
+            ⚡
+
+            <h3>Fast Detection</h3>
+
+            <p>
+                Get results within seconds.
+            </p>
+
+        </div>
+
+        <div class="feature-card">
+
+            🤖
+
+            <h3>AI Powered</h3>
+
+            <p>
+                EfficientNet Deep Learning Model.
+            </p>
+
+        </div>
+
+        <div class="feature-card">
+
+            🎯
+
+            <h3>AI-Assisted Predictions</h3>
+
+            <p>
+                Identifies multiple plant diseases.
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- MODEL INFORMATION -->
+
+<div class="model-section">
+
+    <h2>🤖 Model Information</h2>
+
+    <div class="model-grid">
+
+        <div class="model-card">
+            <h3>Model</h3>
+            <p>EfficientNetB0</p>
+        </div>
+
+        <div class="model-card">
+            <h3>Classes</h3>
+            <p>15 Plant Categories</p>
+        </div>
+
+        <div class="model-card">
+            <h3>Input Size</h3>
+            <p>224 × 224</p>
+        </div>
+
+        <div class="model-card">
+            <h3>Framework</h3>
+            <p>TensorFlow 2.19</p>
+        </div>
+
+    </div>
+
+</div>
+
+    <!-- SUPPORTED PLANTS -->
+
+    <div class="plants-section">
+
+        <h2>Supported Plants</h2>
+
+        <div class="plants-grid">
+
+            <div class="plant-card">
+                🍅
+                <span>Tomato</span>
+            </div>
+
+            <div class="plant-card">
+                🥔
+                <span>Potato</span>
+            </div>
+
+            <div class="plant-card">
+                🫑
+                <span>Bell Pepper</span>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div style="margin-top:50px;">
+
+    <a href="/history"
+       class="analyze-btn"
+       style="
+       text-decoration:none;
+       display:inline-block;
+       ">
+
+       📜 View Prediction History
+
+    </a>
+
+</div>
+
+    <!-- FOOTER -->
+
+    <div class="footer">
+
+        <p>
+            AgroVision AI © 2026
+        </p>
+
+        <p>
+            Smart Farming Through Artificial Intelligence
+        </p>
+
+    </div>
+
+</div>
+
+<script>
+
+const dropZone =
+document.getElementById("dropZone");
+
+const fileInput =
+document.getElementById("fileInput");
+
+const fileName =
+document.getElementById("fileName");
+
+
+dropZone.addEventListener(
+    "click",
+    () => fileInput.click()
+);
+
+
+fileInput.addEventListener(
+    "change",
+    function(){
+
+        if(this.files.length > 0){
+
+            fileName.textContent =
+            "✅ " +
+            this.files[0].name;
+        } else {
+
+            fileName.textContent = "";
+        }
+    }
+);
+
+
+dropZone.addEventListener(
+    "dragover",
+    function(e){
+
+        e.preventDefault();
+
+        dropZone.classList.add(
+            "dragover"
+        );
+    }
+);
+
+
+dropZone.addEventListener(
+    "dragleave",
+    function(){
+
+        dropZone.classList.remove(
+            "dragover"
+        );
+    }
+);
+
+
+dropZone.addEventListener(
+    "drop",
+    function(e){
+
+        e.preventDefault();
+
+        dropZone.classList.remove(
+            "dragover"
+        );
+
+        if(e.dataTransfer.files.length === 0){
+            return;
+        }
+
+        fileInput.files =
+        e.dataTransfer.files;
+
+        fileName.textContent =
+        "✅ " +
+        e.dataTransfer.files[0].name;
+    }
+);
+
+
+function showLoading(){
+
+    document.getElementById(
+        "loadingText"
+    ).style.display = "flex";
+
+    document.getElementById(
+        "analyzeBtn"
+    ).disabled = true;
+
+    document.getElementById(
+        "analyzeBtn"
+    ).innerHTML =
+    "Analyzing...";
+}
+
+</script>
+
+</body>
+</html>
